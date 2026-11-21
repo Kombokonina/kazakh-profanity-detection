@@ -1,7 +1,7 @@
-"""Step 4: load the saved model and predict on new comments (no retraining needed).
+"""Step 4: predict with the saved model (no retraining needed).
 
-Run:  python predict.py "Керемет ойын, маған ұнады" "Мал ойын"     (one or more comments)
-      python predict.py                                            (type comments one by one)
+Run:  python predict.py "Керемет ойын, маған ұнады" "Мал ойын"    (one or more comments)
+      python predict.py                                           (type comments one by one)
 """
 import json
 import sys
@@ -9,41 +9,32 @@ import sys
 import torch
 
 from model import CharCNN
-from textproc import CharVocab
+from textproc import encode, load_vocab
 
 
 def load_model(model_dir="models"):
-    with open(f"{model_dir}/model_config.json") as f:
-        cfg = json.load(f)
-    vocab = CharVocab.load(f"{model_dir}/vocab.json")
-    model = CharCNN(cfg["vocab_size"], cfg["emb_dim"], cfg["filters"], tuple(cfg["kernel_sizes"]), cfg["dropout"])
+    cfg = json.load(open(f"{model_dir}/model_config.json"))
+    vocab = load_vocab(f"{model_dir}/vocab.json")
+    model = CharCNN(cfg["vocab_size"], cfg["emb_dim"], cfg["filters"], cfg["kernel_sizes"], cfg["dropout"])
     model.load_state_dict(torch.load(f"{model_dir}/char_cnn.pt", map_location="cpu"))
-    model.eval()                                          # dropout off
+    model.eval()                                     # dropout off
     return model, vocab, cfg
 
 
 @torch.no_grad()
-def profanity_probability(text, model, vocab, cfg):
-    """P(comment contains profanity). Very long comments are read in overlapping windows."""
-    ids = vocab.encode(text)
-    n = cfg["max_chars"]
-    starts = list(range(0, max(len(ids) - n, 0) + 1, n // 2))
-    if starts[-1] + n < len(ids):
-        starts.append(len(ids) - n)                       # make sure the end is covered
-    windows = [ids[s:s + n] for s in starts]
-    x = torch.zeros(len(windows), max(len(w) for w in windows), dtype=torch.long)
-    for row, w in enumerate(windows):
-        x[row, :len(w)] = torch.tensor(w)
-    return torch.sigmoid(model(x)).max().item()           # the most profane window decides
+def profanity_probability(text, model, vocab):
+    """P(the comment contains profanity). The whole comment is read, whatever its length."""
+    ids = torch.tensor([encode(text, vocab)])
+    return torch.sigmoid(model(ids)).item()
 
 
 def predict(texts, model=None, vocab=None, cfg=None):
-    """Return a list of {text, probability, label} with label 1 = profanity, 0 = no profanity."""
+    """Return [{text, probability, label}], label 1 = profanity, 0 = no profanity."""
     if model is None:
         model, vocab, cfg = load_model()
     results = []
     for text in texts:
-        p = profanity_probability(text, model, vocab, cfg)
+        p = profanity_probability(text, model, vocab)
         results.append({"text": text, "probability": round(p, 4), "label": int(p >= cfg["threshold"])})
     return results
 
