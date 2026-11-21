@@ -1,0 +1,35 @@
+{
+  "seed": 5113,
+  "rows_in_shared_file": 3061,
+  "exact_duplicates_removed": 2,
+  "removed_ids": [
+    "pla064602pla",
+    "pla068206pla"
+  ],
+  "rows_after_deduplication": 3059,
+  "near_duplicate_groups_with_2_or_more_rows": 14,
+  "rows_in_those_groups": 30,
+  "label_fixes_applied": 7,
+  "splits": {
+    "train": {
+      "rows": 2447,
+      "label_0": 1218,
+      "label_1": 1229
+    },
+    "val": {
+      "rows": 306,
+      "label_0": 152,
+      "label_1": 154
+    },
+    "test": {
+      "rows": 306,
+      "label_0": 152,
+      "label_1": 154
+    }
+  },
+  "total": {
+    "rows": 3059,
+    "label_0": 1522,
+    "label_1": 1537
+  }
+}

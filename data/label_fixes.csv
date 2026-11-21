@@ -1,0 +1,8 @@
+kazsandra_id,old_label,new_label,found_by,reason
+pla077406pla,0,1,keyword check (all rows),"""Қотақ амсын была"": three obscene words (қотақ, ам, была = Russian бля)"
+pla012126pla,0,1,keyword check (all rows),"""Қотақбас екен"" (a d*ckhead): obscene insult; the same comment without ""екен"" is labelled 1"
+pla002685pla,0,1,CSV and XLSX disagree,"""Малғұн ит Цукерберг"" (cursed dog Zuckerberg): abusive insult at a person; rule 1b counts insults such as мал, ит, есек"
+pla096072pla,1,0,baseline review (train/val only),"Quiz-game review; ""ит"" (dog) and ""шошқа"" (pig) are literal quiz answers, no profanity (rule 2b)"
+kas012096kas,1,0,baseline review (train/val only),"Product review about a door and thin fabric; no profane or abusive word (rule 2a)"
+gis002524gis,1,0,baseline review (train/val only),"Reports that a guard ""боқтық сөйлеп"" (used foul language) but contains no swear word itself (rule 2c)"
+pla072123pla,0,1,baseline review (train/val only),"""коттаерынды кысындар"" = көттеріңді қысыңдар (squeeze your a**es), vulgar; the same phrase is labelled 1 elsewhere (rule 1a)"

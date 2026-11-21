@@ -1,0 +1,16 @@
+{
+  "emb_dim": 48,
+  "filters": 128,
+  "kernel_sizes": [
+    3,
+    5,
+    7
+  ],
+  "dropout": 0.5,
+  "max_chars": 1024,
+  "vocab_size": 265,
+  "threshold": 0.5,
+  "best_epoch": 15,
+  "seed": 5113,
+  "trainable_parameters": 105649
+}

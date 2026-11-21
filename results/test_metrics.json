@@ -1,0 +1,36 @@
+{
+  "test_examples": 306,
+  "threshold": 0.5,
+  "precision_profanity": 0.931,
+  "recall_profanity": 0.8766,
+  "f1_profanity": 0.903,
+  "accuracy": 0.9052,
+  "confusion_matrix": {
+    "true_0_pred_0": 142,
+    "true_0_pred_1": 10,
+    "true_1_pred_0": 19,
+    "true_1_pred_1": 135
+  },
+  "by_source": {
+    "appstore": {
+      "examples": 272,
+      "profane": 154,
+      "correct": 244
+    },
+    "bookstore": {
+      "examples": 6,
+      "profane": 0,
+      "correct": 6
+    },
+    "mapping": {
+      "examples": 7,
+      "profane": 0,
+      "correct": 6
+    },
+    "market": {
+      "examples": 21,
+      "profane": 0,
+      "correct": 21
+    }
+  }
+}

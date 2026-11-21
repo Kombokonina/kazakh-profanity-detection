@@ -1,0 +1,13 @@
+{
+  "seed": 5113,
+  "max_chars": 1024,
+  "min_char_count": 2,
+  "emb_dim": 48,
+  "filters": 128,
+  "kernel_sizes": [3, 5, 7],
+  "dropout": 0.5,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "max_epochs": 30,
+  "patience": 6
+}

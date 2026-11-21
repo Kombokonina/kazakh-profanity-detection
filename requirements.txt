@@ -1,0 +1,8 @@
+# Exact versions used to prepare the data, train and evaluate (Python 3.13, CPU).
+# These versions need Python 3.12 or newer. Older versions (torch >= 2.0) also run the code
+# and load the saved model, but a model retrained with them can differ slightly.
+torch==2.15.0
+numpy==2.5.3
+pandas==3.0.5
+scikit-learn==1.9.1
+matplotlib==3.11.2

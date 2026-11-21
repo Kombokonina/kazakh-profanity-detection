@@ -1,0 +1,72 @@
+kazsandra_id,replaced_with,what_was_removed
+pla011606pla,@user,social-media username left unmasked in the shared file
+pla015829pla,@user,social-media username left unmasked in the shared file
+pla002965pla,@user,social-media username left unmasked in the shared file
+gis002010gis,<name>,employee full name
+gis002010gis,<name> деген жігітпен,employee first name
+pla034454pla,<name>,full name
+map003804map,<name>,full name
+pla083433pla,<name>,reviewer full name (child)
+pla083433pla,<year>жылғымын,birth year
+gis002539gis,<name>,doctor full name
+gis002539gis,<name>,midwife full name
+gis004126gis,<name> есімді,doctor full name
+gis004126gis,<name>,doctor full name
+pla051153pla,<school>,school of a child
+pla051153pla,<name>,reviewer full name (child)
+pla061970pla,<name>,reviewer full name
+pla061970pla,<name>,employee full name
+pla068728pla,<name>мен,first name of a private person
+pla068728pla,<name> <year> <school> оқиды <place>,"name, birth year, school and town of a private person"
+pla016014pla,<name>,full name of a private person
+gis002604gis,Дәрігер <name>,doctor first name
+gis002573gis,<name>ға,doctor full name
+kas014248kas,<name> ханымға,seller first name
+pla117241pla,<name> ағайға,teacher first name
+pla068281pla,<name> деген,first name of a private person
+pla071212pla,<name> көтіңді,first name of a private person
+pla064564pla,адам <name> ишак,first name of a private person
+pla064564pla,сен емес <name> екен,first name of a private person
+pla112781pla,"Ее,<name>,",first name of another reviewer
+pla068226pla,Котак <name> мал,first name of a private person
+pla070370pla,Айналайын <name> бала,first name of a private person
+pla070370pla,Сосын <name> Ойын,first name and initial of a private person
+pla064992pla,мен <name> пен,first name of a private person
+map004052map,<name> енді,first name of a child
+gis001950gis,<name> тамағы,first name (cook or cafe owner)
+pla093582pla,менің <name> деген,first name of a family member
+pla039101pla,<name>-<name>-<name>-<name>(менің әкем)-<name>,names of the reviewer's relatives
+pla039998pla,<name>дың,full name of a private person (3 times)
+pla039998pla,<place>,home address (2 times)
+pla132270pla,<name>,full name of a private person
+pla133169pla,@user деген,channel name (username)
+pla085193pla,<name>,full name given as a contact
+pla065976pla,Атым <name>,reviewer full name
+gis001833gis,рахмет <name>ке,staff first name
+pla114599pla,<name>қа,full name of a private person
+pla114599pla,<name>,full name of a private person
+pla083997pla,<name>мен <name>ті,first name and surname of private persons
+pla072191pla,<name>,full name of a private person
+pla072191pla,Мен <name> даиынмын,first name of a private person
+pla061300pla,Атым <name>,reviewer first name
+pla061300pla,Мен <name>га,first name of the reviewer's friend
+pla061300pla,досым <name>,first name of the reviewer's friend
+pla061300pla,<name>да мен,first name of the reviewer's friend
+pla061300pla,емес <name> мен <name> ушин,first names of the reviewer's friends
+pla061300pla,<name> <name> <name> ушин,first names of three private persons
+pla088777pla,атым <name>,reviewer first name
+pla099344pla,ойын <name> аузынды,first name of a private person
+pla050290pla,Мен <name> болам,reviewer first name
+pla058693pla,<name>,full name of a private person
+pla032773pla,<name> <name>дің,first name of a private person
+pla075320pla,е <name> мен,first name of a private person
+pla077223pla,Менің атым <name>,reviewer first name
+pla060184pla,менің атым <name>,reviewer first name
+pla074225pla,атым <name>,reviewer first name or nickname
+pla093658pla,<name> <name> <name> <name> <name>,first names of five private persons
+pla093889pla,маған <name> ның,first name of a private person
+pla089518pla,уйге <name> не,first name of a private person
+pla132878pla,мен <name> екеумиз,full name of a private person
+pla132878pla,мен <name> екеумиз,first name of a private person
+gis000399gis,жігіт <name>,staff first name
+pla119319pla,🔥 @user 🔥,app username
