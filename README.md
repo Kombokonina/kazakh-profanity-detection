@@ -1,8 +1,5 @@
 # Kazakh Profanity Detection
 
-DSSC5113 Deep Learning · Bonus project · Fall 2026
-**Author:** Arlen Maker · **Student ID:** ✏️ *(add your ID)*
-
 A small character-level CNN, trained from scratch, reads one Kazakh comment and predicts **1 = profanity** or **0 = no profanity**, with the probability P(profanity).
 
 | Test set (306 comments, threshold 0.50) | Precision | Recall | F1 | Accuracy |
