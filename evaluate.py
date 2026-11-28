@@ -1,13 +1,15 @@
 """Step 3: score the saved model once on the test set.
 
 Run:  python evaluate.py
-Writes results/test_metrics.json, results/test_predictions.csv and results/confusion_matrix.png.
+Writes results/test_metrics.json (with a 95% bootstrap interval for F1), results/test_predictions.csv
+and results/confusion_matrix.png.
 """
 import json
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 from sklearn.metrics import (ConfusionMatrixDisplay, accuracy_score, confusion_matrix, f1_score,
                              precision_score, recall_score)
@@ -23,6 +25,9 @@ def main():
     test["correct"] = test["prediction"] == test["label"]
     y, p = test["label"], test["prediction"]
     cm = confusion_matrix(y, p)
+    rng = np.random.default_rng(5113)                # bootstrap: draw the test comments again 2,000 times
+    draws = rng.integers(0, len(test), (2000, len(test)))
+    boot = [f1_score(y.to_numpy()[d], p.to_numpy()[d]) for d in draws]
 
     metrics = {
         "test_examples": len(test),
@@ -30,6 +35,7 @@ def main():
         "precision_profanity": round(precision_score(y, p), 4),
         "recall_profanity": round(recall_score(y, p), 4),
         "f1_profanity": round(f1_score(y, p), 4),
+        "f1_95_interval": [round(float(np.percentile(boot, 2.5)), 3), round(float(np.percentile(boot, 97.5)), 3)],
         "accuracy": round(accuracy_score(y, p), 4),
         "confusion_matrix": {"true_0_pred_0": int(cm[0, 0]), "true_0_pred_1": int(cm[0, 1]),
                              "true_1_pred_0": int(cm[1, 0]), "true_1_pred_1": int(cm[1, 1])},

@@ -1,6 +1,6 @@
 # Kazakh Profanity Detection
 
-A small character-level CNN, trained from scratch, reads one Kazakh comment and predicts **1 = profanity** or **0 = no profanity**, with the probability P(profanity).
+A small character-level CNN, trained from scratch, reads one Kazakh comment and predicts **1 = profanity** or **0 = no profanity**, with the probability P(profanity). It was the best of four models we compared: a TF-IDF baseline, this CNN, a character BiLSTM and a small character Transformer ([model comparison](#model-comparison)).
 
 | Test set (306 comments, threshold 0.50) | Precision | Recall | F1 | Accuracy |
 |---|---|---|---|---|
@@ -71,7 +71,7 @@ We did not reuse the shared file's own split: it had no seed and the same review
 
 ## 2. Model
 
-**Why a character CNN.** Swear words are short letter patterns written in many ways (с\*ка, Көтттт, qotaq, Russian words). A word model sees most of these as unknown words; a character model sees all of them. Each convolution filter learns one short pattern, and max pooling asks "did it appear anywhere?". The model has 105,649 parameters and trains in about 2 minutes on a CPU. On validation it beats a simple TF-IDF + logistic regression baseline (F1 0.931 vs 0.906).
+**Why a character CNN.** Swear words are short letter patterns written in many ways (с\*ка, Көтттт, qotaq, Russian words). A word model sees most of these as unknown words; a character model sees all of them. Each convolution filter learns one short pattern, and max pooling asks "did it appear anywhere?". The model has 105,649 parameters and trains in about 2 minutes on a CPU. It had the best validation F1 of the four models we compared ([below](#model-comparison)).
 
 **One comment, from text to prediction** («МАЛ ОЙЫН!!!!!»):
 
@@ -87,13 +87,26 @@ We did not reuse the shared file's own split: it had no seed and the same review
 
 **Settings** ([`config.json`](config.json)): embedding 48, 128 filters per width (3, 5, 7), dropout 0.5, `BCEWithLogitsLoss`, Adam with learning rate 0.001, batch 32, up to 30 epochs, seed 5113. We keep the epoch with the best validation F1 and stop after 6 epochs without improvement (best: epoch **15** of 21). The threshold is the value from 0.05–0.95 with the best validation F1: **0.50**. Validation: precision 0.946, recall 0.916, F1 0.931. Training is deterministic: rerunning everything gives identical files.
 
+### Model comparison
+
+[`compare_models.py`](compare_models.py) trains a character BiLSTM and a small character Transformer ([`model.py`](model.py)) with the same data, vocabulary, training loop, settings and seed as the CNN, and refits the TF-IDF baseline from [`check_labels.py`](check_labels.py). The three neural models all read character ids, end with max pooling → dropout 0.5 → linear → sigmoid, and have about 100k parameters. Each model's threshold is chosen on validation.
+
+| Model | Parameters | Training (2-core CPU) | Validation F1 | Test F1 |
+|---|---|---|---|---|
+| TF-IDF (1–5 letter chunks) + logistic regression | 74,807 weights | 1 s | 0.926 | 0.898 |
+| **Character CNN (final)**: filters 3, 5, 7 | 105,649 | about 2 min | **0.931** | **0.903** |
+| Character BiLSTM: 80 units each way | 96,081 | about 17 min | 0.909 | 0.877 |
+| Character Transformer: 2 layers, 4 heads, first 256 characters | 106,657 | about 8 min | 0.799 | 0.770 |
+
+We chose the model on validation. The CNN is best and the fastest neural model. The baseline is close (seeds alone move F1 by about 0.01), so letter chunks are already a strong signal on 3,000 comments. The BiLSTM reads one letter after another, so it is much slower and a little worse. The Transformer, trained from scratch, is clearly worse, probably because attention has to learn where to look, which needs more data. It reads only the first 256 characters because attention cost grows with the length squared (95% of comments are shorter). One seed per model; every row is in [`results/model_comparison.csv`](results/model_comparison.csv).
+
 ## 3. Results
 
 The test set was used only after the epoch and threshold were fixed ([`evaluate.py`](evaluate.py)).
 
 ![Confusion matrix](results/confusion_matrix.png)
 
-142 clean and 135 profane comments are right; there are 10 false positives and 19 false negatives. The 95% bootstrap interval for F1 is 0.864–0.935, so small differences between models mean little. All 154 profane test comments are app reviews. The other 34 test comments (marketplace, maps, books) are clean, and 33 were classified correctly. Every test prediction is in [`results/test_predictions.csv`](results/test_predictions.csv).
+142 clean and 135 profane comments are right; there are 10 false positives and 19 false negatives. The 95% bootstrap interval for F1 is 0.864–0.935 (the test set drawn again 2,000 times; `f1_95_interval` in [`results/test_metrics.json`](results/test_metrics.json)), so small differences between models mean little. All 154 profane test comments are app reviews. The other 34 test comments (marketplace, maps, books) are clean, and 33 were classified correctly. Every test prediction is in [`results/test_predictions.csv`](results/test_predictions.csv).
 
 **Moderation.** A false positive hides an honest review; a false negative leaves swearing visible, also to children reading game reviews. If flagged comments are deleted automatically, use a high threshold; if a human checks them, use a low one. Validation: threshold 0.3 → precision 0.900, recall 0.935; 0.9 → precision 0.992, recall 0.792. A sensible policy: hide above 0.9, send 0.3–0.9 to a moderator, publish below 0.3.
 
@@ -104,7 +117,7 @@ The test set was used only after the epoch and threshold were fixed ([`evaluate.
 | «өте күшті емес **сука**» | 1 | 0.013 | One swear word among positive words. In training, «сука» almost always comes with other swear words. Without «күшті», P = 0.38. |
 | «**Ам** сияқты ұнады👍» | 1 | 0.008 | «ам» has 2 letters and hides inside clean words (адам); «ұнады» (liked) pulls the score down. |
 | «Wws **amshyk** samokat **ebanuty** …» | 1 | 0.115 | Latin script: only about 75 training comments are mainly Latin. |
-| «Неге **қотар**лмайды» (won't download) | 0 | 0.975 | Looks like «қотақ» (297 training comments, all profane); the clean verb «қотару» never appears in training. |
+| «Неге **қотар**лмайды» (won't download) | 0 | 0.975 | Looks like «қотақ» (in some spelling in 297 training comments, all profane); the clean verb «қотару» never appears in training. |
 | «Маңғыстауда **мал** жоқ па? …» | 0 | 0.989 | Literal «мал» (livestock): 92% of comments with the word «мал» are profane. «Мал шаруашылығы» is handled (13 clean training examples), other literal uses are not. |
 | «Супер Боди (&68587 **\*^\*^**…» | 0 | 0.746 | `*` usually hides a swear word (43 of 51 training comments with `*` are profane). |
 
@@ -137,9 +150,10 @@ python prepare_data.py                 # 1. duplicates, groups, split, label fix
 python train.py                        # 2. train, pick epoch and threshold on validation -> models/, results/
 python evaluate.py                     # 3. test metrics, confusion matrix, predictions -> results/
 python check_labels.py                 # optional: label checks and the baseline
+python compare_models.py               # optional: baseline, CNN, BiLSTM, Transformer -> results/model_comparison.csv (about 30 min)
 ```
 
-In Python: `from predict import predict; predict(["Мал ойын екен"])` returns `[{'text': 'Мал ойын екен', 'probability': 0.9999, 'label': 1}]`. Exact versions are in [`requirements.txt`](requirements.txt). In Colab the preinstalled packages are enough.
+In Python: `from predict import predict; predict(["Мал ойын екен"])` returns `[{'text': 'Мал ойын екен', 'probability': 0.9999, 'label': 1}]`. `load_model(name="bilstm")` or `load_model(name="transformer")` loads one of the other two models. Exact versions are in [`requirements.txt`](requirements.txt). In Colab the preinstalled packages are enough.
 
 ## 5. Limitations
 

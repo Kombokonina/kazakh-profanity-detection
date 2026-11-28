@@ -4,6 +4,10 @@
   "precision_profanity": 0.931,
   "recall_profanity": 0.8766,
   "f1_profanity": 0.903,
+  "f1_95_interval": [
+    0.864,
+    0.935
+  ],
   "accuracy": 0.9052,
   "confusion_matrix": {
     "true_0_pred_0": 142,

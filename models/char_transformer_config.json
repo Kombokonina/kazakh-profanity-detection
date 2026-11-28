@@ -1,0 +1,16 @@
+{
+  "emb_dim": 48,
+  "dropout": 0.5,
+  "max_chars": 1024,
+  "lstm_hidden": 80,
+  "transformer_heads": 4,
+  "transformer_layers": 2,
+  "transformer_ff": 384,
+  "transformer_dropout": 0.1,
+  "transformer_max_chars": 256,
+  "vocab_size": 265,
+  "threshold": 0.5,
+  "best_epoch": 11,
+  "seed": 5113,
+  "trainable_parameters": 106657
+}

@@ -8,15 +8,16 @@ import sys
 
 import torch
 
-from model import CharCNN
+from model import build_model
 from textproc import encode, load_vocab
 
 
-def load_model(model_dir="models"):
-    cfg = json.load(open(f"{model_dir}/model_config.json"))
+def load_model(model_dir="models", name="cnn"):
+    """name: "cnn" (the final model), "bilstm" or "transformer" (saved by compare_models.py)."""
+    cfg = json.load(open(f"{model_dir}/model_config.json" if name == "cnn" else f"{model_dir}/char_{name}_config.json"))
     vocab = load_vocab(f"{model_dir}/vocab.json")
-    model = CharCNN(cfg["vocab_size"], cfg["emb_dim"], cfg["filters"], cfg["kernel_sizes"], cfg["dropout"])
-    model.load_state_dict(torch.load(f"{model_dir}/char_cnn.pt", map_location="cpu"))
+    model = build_model(name, cfg["vocab_size"], cfg)
+    model.load_state_dict(torch.load(f"{model_dir}/char_{name}.pt", map_location="cpu"))
     model.eval()                                     # dropout off
     return model, vocab, cfg
 

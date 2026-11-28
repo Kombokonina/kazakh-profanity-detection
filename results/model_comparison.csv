@@ -1,0 +1,5 @@
+model,parameters,train_seconds,best_epoch,threshold,val_f1,test_precision,test_recall,test_f1,test_accuracy
+TF-IDF + logistic regression (baseline),74807,1,,0.45,0.9256,0.9073,0.8896,0.8984,0.8987
+Character CNN (final),105649,125,15,0.5,0.9307,0.931,0.8766,0.903,0.9052
+Character BiLSTM,96081,1039,23,0.4,0.9085,0.8766,0.8766,0.8766,0.8758
+Character Transformer,106657,453,11,0.5,0.7987,0.7485,0.7922,0.7697,0.7614
